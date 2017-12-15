@@ -36,49 +36,65 @@
 <body>
 <header>
   <!-- グループ番号・学籍番号・名前を書く．-->
-  <h1>グループ1 27115157 横尾由春</h1>
+  <h1>グループ3 27115157 横尾由春</h1>
 
   <!-- 目次生成用 -->
   <nav id="outline"></nav>
 </header>
 
 <h2>グループ</h2>
-グループ作成書類: <a href="../Grep6/index.html">GrepX</a><br>
+グループ作成書類: <a href="../Grep7/index.html">Grep7</a><br>
 メンバーと役割分担: 
 <ul>
-<li><a href="../../../../ckl15076/workspace/kprep/rep6/index.html">鈴木祥太 27115076</a>: 課題6-2担当，</li>
-<li><a href="../../../../ckl15077/workspace/kprep/rep6/index.html">鈴木進也 27115077</a>: 課題6-3 ,課題6-5 GUI実装担当</li>
-<li><a href="../../../../ckl15120/workspace/kprep/rep6/index.html">丹羽貴敏 27115120</a>: 課題6-2担当，</li>
-<li><a href="../../../../ckl15157/workspace/kprep/rep6/index.html">横尾由春 27115157</a>: 課題6-1 ,課題6-4担当</li>
+<li><a href="../../../../ckl15076/workspace/kprep/rep7/index.html">鈴木祥太 27115076</a>: 課題7-3,課題7-5担当，</li>
+<li><a href="../../../../ckl15077/workspace/kprep/rep7/index.html">鈴木進也 27115077</a>: 課題7-2担当</li>
+<li><a href="../../../../ckl15120/workspace/kprep/rep7/index.html">丹羽貴敏 27115120</a>: 課題7-3,課題7-5担当，</li>
+<li><a href="../../../../ckl15157/workspace/kprep/rep7/index.html">横尾由春 27115157</a>: 課題7-1 ,課題7-7担当</li>
 </br>
-課題振り分けを上記の通り行った。6-2にメンバーの半分を割り当てている理由は唯一のプログラムを作成する課題であるからである。</br>
-またGUI作成(基本、発展含む)を1人に割り当てた。</br>
-
 </ul>
 
 <h2>ソースファイル</h2>
 <ul>
-
+  <li><a href="../../Planner2/src/planner.java">planner.java</a>(課題7-1)
     <!-- 実装・変更したソースファイルへのリンク．修正する． -->
     <!-- ※ リンクは絶対パスに変更せず，上記のような相対パスのままで！ -->
+  <li><a href="../../Dining/src/Dining.java">Dining.java</a>(課題7-7)
+
 </ul>
 
 <hr>
 
-<h2>課題6-1</h2>
+<h2>課題7-1</h2>
 <!-- 課題を書く．-->
-[必須課題6-1] まず，教科書3.2.1の「前向き推論」のプログラムと教科書3.2.2の「後向き推論」のプログラムとの動作確認をし，前向き推論と後ろ向き推論の違いを説明せよ．また，実行例を示してルールが選択される過程を説明せよ．説明の際には，ドロー系ツール（LibreOfficeのDrawやTgifなど）を使ってp.106 図3.11やp.118 図3.12のような図として示すことが望ましい．
-
-
+[必須課題7-1] 目標状態を変えてみたときに，動作が正しくない場合があったかどうか，実行例を示して考察せよ．</br>
+また，もしあったならその箇所を修正し，どのように修正したか記せ．</br>
 <h3>独自仕様の説明</h3>
 <!--
  もし自分で独自に決めた仕様があれば，その説明を書く．
 -->
-なし。
+
+<b>問題点1</b></br>
+配布されたプログラムをそのまま実行すると、"Place A on A"など、Aの上にAを置く動作が確認できる。</br>
+この動作は、Aという物体が2つ以上存在しない限りあり得ない動作なのでこのエラーを修正する。</br>
+<b>問題点2</b></br>
+目標状態を"B on C"、"A on B"ではなく"A on B"、"B on C"のように物体の位置が上のものから入力してしまうと正しく解を得ることができない。</br>
+</br>
+以上2つの問題点を解決する。</br>
+
+方針等は考察欄で記述する。</br>
+
 
 <h3>プログラムの構造</h3>
 <!--  どのような設計をしたか．-->
-なし。
+<b>問題点1</b></br>
+オペレーター選択でランダムな順番に入れ替える際に、オペレーター3(ブロックの上から手への移動)が選択されず、選択されたオペレーターを最後尾ではなく3番目に代入するようにした。</br>
+これにより、オペレーター3は最後尾に固定され、選ばれることはなくなる。</br>
+</br>
+
+<b>問題点2</b></br>
+"○ on ○"の目標状態を抽出し、その○の集合から一度しか登場しない物体名をさらに抽出する。("A on B","B on C","C on D"ならA,D)</br>
+一度しか出てこない物体のうち、後ろの○の物体を含む文を始めにゴールリストに格納する(C on D)。その後、今格納した始めの○の名前を持つ物体(C)を後ろに含む文を格納する(B on C)。その後はしりとりの要領で、始めが(A)を含む文になるまで繰り返す。</br>
+
 
 
 <h3>実装の説明</h3>
@@ -86,207 +102,340 @@
  どう実装したか，ソースコードを詳細に説明する．
  特に重要な箇所はレポートにペーストして説明する．
 -->
-前向き推論と後ろ向き推論の違いは考察で述べる。</br>
+<b>問題点1</b></br>
+ランダムな値を取得する際、0,1,2のいずれかが選択されるようにした。</br>
+またリスト入れ替えの際に最後尾ではなく3番目に代入するようにした。</br>
+<pre class="brush: java">
+private int planningAGoal(String theGoal,Vector theCurrentState,
+			Hashtable theBinding,int cPoint){
+...
+int randInt = Math.abs(rand.nextInt()) % (operators.size()-1);
+Operator op = (Operator)operators.elementAt(randInt);
+operators.removeElementAt(randInt);
+operators.add(2,op);
+...
+}
+</pre>
+</br>
+<b>問題点2</b></br>
+今回この問題を解決するにあたって変更を加えたメソッドはinitGoalListである。</br>
+必要なVectorを定義する。</br>
+onGoalListは目標状態から"○ on ○"の集合が、</br>
+otherListは"○ on ○"の状態が、</br>
+finalGoalListはソート後のGoalList集合が格納される。</br>
+<pre class="brush: java">
+private Vector initGoalList(){
+...
+		Vector onGoalList = new Vector();
+		Vector otherList = new Vector();
+		Vector finalGoalList = new Vector();
+}
+</pre>
+
+まず、"○ on ○"の形をもつ目標状態を抽出し、onGoalListに格納する。</br>
+今回状態のなかで3wordなのは"○ on ○"のみなのでこの特性を利用している。</br>
+また、"○ on ○"以外の形を持つ目標状態をotherListに格納する。</br>
+<pre class="brush: java">
+private Vector initGoalList(){
+		for(Object s : goalList)
+		{
+			String str = (String)s;
+			String[] tmp = str.split(" ", 0);
+			if(tmp.length == 3)
+			{
+				onGoalList.addElement(s);
+			}
+			else
+			{
+				otherList.addElement(s);
+			}
+		}
+</pre>
+
+次に、onGoalList内の物体名の回数をそれぞれカウントする。</br>
+<pre class="brush: java">
+		Map＜String, Integer＞ m = new HashMap＜String, Integer＞();
+		// Java7以降なら new HashMap<>() でOK
+
+		for (Object s : onGoalList) {
+			String str = (String)s;
+			String[] tmp = str.split(" ", 0);
+			for(String t : tmp){
+
+				int v;
+				if (m.containsKey(t)) {
+					// Mapに登録済み
+					v = m.get(t) + 1;
+				} else {
+					// Mapに未登録
+					v = 1;
+				}
+				m.put((String)t, v);
+			}
+		}
+</pre>
+登場回数が1回だったものをoneListリストに記録した後、</br>
+しりとりの要領で、初めと終わりが1回のものになるようにソートする。</br>
+このとき、終わりが１回のものを最初に格納する。</br>
+<pre class="brush: java">
+		do{
+			for(Object s : onGoalList)
+			{
+				String str = (String)s;
+				String[] tmp = str.split(" ", 0);
+				//			System.out.println(s);
+				//			System.out.print(tmp[2]+',');
+				//			System.out.println(last);
+
+				if(Objects.equals(tmp[2],last)){
+					finalGoalList.add(s);
+					last = tmp[0];
+					x = tmp[0];
+					//	System.out.println("first="+first);
+					//	System.out.println("last="+last);
+
+				}
+
+			}
+		}while(!Objects.equals(first,x));
+</pre>
+
+<!--
+  ソースコードをはりつける時は <pre> タグを使う
+  class="brush: java" でシンタックスハイライトする
+  重要な部分のみを貼り付ければ良い
+-->
 
 
 
 <h3>実行例</h3>
 <!-- 実行例を示す．PNGやGIF等の絵を張っても良い．-->
-<b>・前向き推論</b></br>
-講義で与えられたデータセットでは量が多すぎるため、ここでは以下のようにデータ(ワーキングメモリ)、ルールを定義し推論の説明を行う。</br>
+<p>
+問題例として5つの物体を動かす。</br>目標状態を"A on B","C on D","holding E","B on C"の順番で与えて実行した。</br>
+以下のような解(プラン)を得た。</br>
+<img src="./7-1-2.png"/>
 </br>
-</br>
-データ</br>
-<li>1...my-car is inexpensive</li>
-<li>2...my-car has an aluminium body</li>
-<li>3...my-car has only 2 seats</li>
-<li>4...my-car has a VTEC engine</li>
-</br>
-</br>
-ルール</br>
-<li>
-<b>rule</b>&emsp; 	"CarRule1"</br>
-<b>if</b>&emsp;&emsp;	"?x is made in Japan"</br>
-&emsp;&emsp;&emsp;	"?x has a VTEC engine"</br>
-<b>then</b>&emsp; 	"?x is a Honda"</br></li></br>
-<li><b>rule</b>&emsp; 	"CarRule2"</br>
-<b>if</b>&emsp;&emsp;	"?x is inexpensive"</br>
-<b>then</b>&emsp; 	"?x is made in Japan"</br>
-</li>
-</br>
-<li><b>rule</b>&emsp; 	"CarRule3"</br>
-<b>if</b>&emsp;&emsp;	"?x has an aluminium body"</br>
-&emsp;&emsp;&emsp;	"?x has only 2 seats"</br>
-<b>then</b>&emsp; 	"?x is a NSX"</br></li></br>
-
-上のようにルール、データを変更した上で、前向き推論を行った結果以下のような結果を得た。</br>
+なお10回実行してみたが全て同じ結果を得ている。</br>
+</p>
 
 <!-- 画像ファイルを貼る場合は <img> タグを使う -->
-<img src="./6-1.png"/></br>
-この実行例を基に説明を行う。</br></br>
-<b>1巡目</b></br>
-<p>
-はじめに、CarRule1の前文とデータが一致するかどうかの判定を行う。</br>
-今回の例ではCarRule1の前文(2つ)ともマッチする文章がデータには存在しない。このルールによってワーキングメモリにデータが追加されることはない。</br>
-よってCarRule1の探索が終了し、次のルールであるCarRule2の探索を行う。</br></p><p>
-CarRule2の前件は、1番目のデータ"my-car is inexpensive"とマッチングする(トリガ)。マッチング判定がtrueとなると、さらに
-CarRule2の後件の文章("?x is made in Japan")がワーキングメモリに存在するかどうかの判定を行う。</br>
-今回は存在しないので、後件の文章("?x is made in Japan")がワーキングメモリに追加され、</br>
-"Success: my-car is made in Japan"</br>
-が出力される。</br>
-ここでCarRule2の探索は終了となる。</p>
 
-どこかのルールでtrueとなっても、ルールの探索は引き続き行われる。よってワーキングメモリを引き継いだままCarRule3の探索を開始する。</br>
-<p>
-CarRule3の前件とデータはマッチングしないため、データの追加が行われることはない。</br>
-ここでCarRule3の探索が終了となる。</br>
-</p>
-<p>
-すべてのルールの探索が終わったため、この巡でワーキングメモリに新たなアサーションが追加されたかどうかを調べる。</br>
-今回はCarRule2で"my-car is made in Japan"が追加されたため、trueとなる。trueとなった場合、再度ルールの探索をはじめから開始する。</br>
-
-</p>
-</br>
-<b>2巡目</b></br>
-<p>
-再度、CarRule1から探索を開始する。</br>
-今回は、ワーキングメモリにはじめから格納されている"my-car is made in Japan","my-car has a VTEC engine",に加えて1巡目でワーキングメモリに追加された"my-car is made in Japan"によってルールCarRule1がトリガされる。</br>
-1巡目では"my-car is made in Japan"がワーキングメモリに格納されていなかったため、ルールCarRule1はトリガされることはなかった。</br>
-CarRule1の後件のアサーションである"my-car is a Honda"はワーキングメモリに格納されていないため、このアサーションはワーキングメモリに無事格納される。</br></p>
-すべてのルールの探索が終わったため、再度この巡でワーキングメモリに新たなアサーションが追加されたかどうかを調べる。</br><p>
-CarRule2もワーキングメモリに前件のアサーションが格納されているので、トリガされる。</br>
-しかし、ワーキングメモリに後件の文章"my-car is made in Japan"が既に格納されているため、新たに格納されることはなく、CarRule2の処理が終了する。</p>
-CarRule3は1巡目と同様にマッチング判定を行うが、トリガされることなく2巡目は終了している。</br>
-アサーション追加判定は、今回もCarRule1で"my-car is a Honda"が追加されたため、trueとなる。</br>
-</p></br>
-<b>3巡目</b></br>
-<p>
-再度、CarRule1から探索を開始する。</br>
-CarRule1はトリガされるが、"my-car is a Honda"は既にワーキングメモリに格納されているため、新たに追加されることはない。</br>
-また今回も、はじめから格納されている"my-car has an aluminium body","my-car has only 2 seats",に加えて2巡目でワーキングメモリに追加された"my-car is a Honda"によってルールCarRule2がトリガされる。</br>
-CarRule2の後件のアサーションである"my-car is a NSX"はワーキングメモリに格納されていないため、このアサーションが格納される。</br></p>
-CarRule3は1巡目と同様にマッチング判定を行うが、トリガされることなく3巡目は終了している。</br>
-今回もアサーション追加判定はtrueとなる。</br>
-</br>
-<b>4巡目</b></br>
-<p>
-再度、CarRule1から探索を開始する。</br>
-CarRule1,CarRule2,CarRule3それぞれトリガは起こるが、全てのルールの後件がワーキングメモリに存在するため、新たに格納されることはない。</br>
-よって、アサーション追加判定はfalseとなり、推論は終了する。</br>
-
-</br>
-</br>
-</p>
-また視覚的に推論を表すと以下のようになる。</br>
-<img src="./figure.png"style="width:60%"></br>
-
-<b>・後ろ向き推論</b></br>
-
-今回も簡単のため、質問を"?x is an Accord Wagon"ではなく"?x is a Honda"とする。</br>
-また、ルールからCarRule7を取り除き推論を行う。</br>
-</br>
-以上のように設定した後、プログラムを実行すると、以下のような結果を得た。</br>
-<img src="./6-2.png"></br>
-この実行例を基に説明を行う。</br></br>
-</br>
-<b>手順1</b></br>
-<p>
-与えられた仮説は"?x is a Honda"である。これと照合するワーキングメモリのアサーションは存在しないため、ルールを使って仮説を置き換える。</br>
-まずCarRule8の後件が仮説と照合する。</br>
-このトリガにより、仮説が"?x6 is made in Japan","?x6 has a VTEC engine"に置き換わる。</br>
-手順2以降これらを証明する方針となる。</br>
-手順1終了時の仮説リスト:["?x6 is made in Japan","?x6 has a VTEC engine"]</br>
-</br>
-</p>
-<b>手順2</b></br>
-<p>
-手順1によって置き換わった仮説をアサーション、ルールの後件と照合する。照合した結果"?x6 is made in Japan"はCarRule1と照合、"?x6 has a VTEC engine"はワーキングメモリと照合する。"?x6 is made in Japan"はルールとの照合のため前件である"?x7 is inexpensive"と置き換わる。</br>
-"?x6 has a VTEC engine"はワーキングメモリの"his-car has a VTEC engine"と照合されるため、事実と結びついたことになる。</br>
-手順2終了時の仮説リスト:["?x7 is inexpensive"]</br></p></br>
-<b>手順3</b></br>
-<p>
-最後に手順2終了時の仮説リスト"?x7 is inexpensive"を証明する。</br>
-ワーキングリスト内の"his-car is inexpensive"と照合されるため、これも事実として認められる。</br>
-これにより、仮説全てを証明したことになり、与えられた質問"?x is a Honda"はtrue,{?x=his-car}を得る。</br>
-</p>
-</br>
-</br>
-また視覚的に推論を表すと以下のようになる。</br>
-<img src="./figure2.png"style="width:60%"></br>
-<h2>課題6-4</h2>
-<!-- 課題を書く．-->
-[必須課題6-4] グループでの進捗管理や成果物共有などについて，工夫した点や使ったツールについて，グループ作成書類で考察せよ．
+<h2>発展課題7-7</h2>
+<!-- 以下，上記と同様 -->
+教科書3.3節のプランニング手法を応用できそうなブロック操作以外のタスクをグループで話し合い，新たなプランニング課題を自由に設定せよ．
+さらに，もし可能であれば，その自己設定課題を解くプランニングシステムを実装せよ． 
 <h3>独自仕様の説明</h3>
 <!--
  もし自分で独自に決めた仕様があれば，その説明を書く．
 -->
-なし。
+<p>ブロック操作以外のタスクとして、食事をする哲学者問題をプランニングによって解く。</p>食事をする哲学者問題とは、並列処理に関する問題例として昔から取り上げられている問題である。</br>
+
+<p>5人の哲学者が食事したり、考え事をしたりしている。かれらの前には、真ん中にスパゲッティの入った大きなボールが置かれた丸い食卓がある。その食卓には5枚の皿が置かれ、皿と皿の間にフォークが1本ずつ置かれている。
+
+スパゲッティをボールから取って自分の皿によそうには2本のフォークを必要とし、哲学者は一度に1本のフォークしかテーブルから取ることができない（左右の手で同時に両側にある2本のフォークを取ることはできない、という意味。まずどちらかの側のフォークを取ってから、逆の側のフォークを取る）。哲学者同士は決して会話をしない。このため、5人が左のフォークを手にとって右のフォークが食卓に置かれるのを待つという危険なデッドロック状態が発生する可能性がある。</p>
+本来この問題は解答例を前向きに推論して解を得ることができるか議論するような問題であるが、今回は後ろ向きに推論し、確実に解を得る(ある人物を食事状態にする)ことを目標とした。</br>
+また、人数は5人に固定する。</br>
+</br>
+以下のような配置を考える。</br>
+<img src="./Dining philosopher.png" width="60%" height="60%">
+</br>
+今回このプランニングを実装する上で必要と考える状態、ルールを以下に示す。</br>
+</br>
+<b>状態</b></br>
+・philosopher○ has fork △ on the left hand</br>
+・philosopher○ has fork △ on the right hand</br>
+・philosopher○ has nothing on the left hand</br>
+これは哲学者の右手、左手の状態を表す状態である。</br>
+○には哲学者の名前、△にはフォークの番号が入る。</br>
+哲学者の手があいている状態はnothingであらわす。</br>
+以上のような状態を常に人それぞれ10つ(5×2)用意し、誰がどのフォークを持っているかを管理する。</br></br>
+
+
+・philosopher○ is eating</br>
+これは哲学者○が食事をしている状態である。</br></br>
+・ontable fork △</br>
+これはフォーク△がテーブルにあることを示す状態である。</br></br>
+
+<b>初期状態</b></br>
+初期状態は、全員の哲学者がフォークを持っていなく、全てのフォークがテーブルに置かれた状態</br>
+</br>
+philosopher A has nothing on the left hand</br>
+philosopher A has nothing on the right hand</br>
+philosopher B has nothing on the left hand</br>
+philosopher B has nothing on the right hand</br>
+philosopher C has nothing on the left hand</br>
+philosopher C has nothing on the right hand</br>
+philosopher D has nothing on the left hand</br>
+philosopher D has nothing on the right hand</br>
+philosopher E has nothing on the left hand</br>
+philosopher E has nothing on the right hand</br>
+ontable fork 1</br>
+ontable fork 2</br>
+ontable fork 3</br>
+ontable fork 4</br>
+ontable fork 5</br>
+</br>
+としているが、矛盾を起こさない限り変更は可能である。</br></br>
+
+<b>目標状態</b></br>
+目標状態は、基本的に哲学者○が食事をしている状態を表す"philosopher○ is eating"とする。</br>
+ここも変更は可能である(フォークを片手に持っている状態など)</br></br>
+
+<b>ルール</b></br>
+Rule 1</br>
+NAME Eating philosopher A</br> 
+IF philosopher A has fork 1 on the left hand</br>
+   philosopher A has fork 5 on the right hand</br>
+ADD philosopher A is eating</br>
+DELETE</br>
+</br>
+Rule 2</br>
+NAME Eating philosopher B</br> 
+IF philosopher B has fork 2 on the left hand</br>
+   philosopher B has fork 1 on the right hand</br>
+ADD philosopher B is eating</br>
+DELETE -</br>
+...</br>
+</br>
+ルール1〜5では、それぞれの哲学者がゴール(食事状態)となる条件を与えている。</br>
+例えばルール1のIF部は哲学者Aが食事をするための条件を示しており、左手にフォーク1、右手にフォーク5を持つことで食事状態となる。</br>
+このようなルールを5人分設定している。</br>
+</br></br>
+Rule 6</br>
+NAME put fork ?y down on the table for philosopher ?x</br> 
+IF philosopher ?x has fork ?y on the ?a hand</br>
+ADD philosopher ?x has nothing on the ?a hand</br>
+  ontable fork ?y</br>
+DELETE philosopher ?x has fork ?y on the ?a hand</br>
+</br>
+ルール6では哲学者が持つフォークをテーブルに置く動作を示している。</br>
+哲学者?xがフォーク?yを?a手に持っている場合、そのフォークを置くことができる。</br>
+NAMEの?yにはフォーク番号が入り、?xには哲学者の名前が入る。また?aには右左が入る。</br>
+</br></br>
+Rule 7</br>
+NAME pick up fork ?y from the table for philosopher ?x</br> 
+IF ontable fork ?y</br>
+  philosopher ?x has nothing on the ?a hand</br>
+ADD philosopher ?x has fork ?y on the ?a hand</br>
+DELETE ontable fork ?y</br>
+  philosopher ?x has nothing on the ?a hand</br>
+</br>
+ルール7ではテーブルの上にあるフォークを哲学者が持つ操作を示している。</br>
+テーブルの上にfork ?yがあり、哲学者 ?xが?a手に何も持っていない場合、?yを手に取ることができる。</br>
+ルール6と同様NAMEの?yにはフォーク番号が入り、?xには哲学者の名前が入る。また?aには右左が入る。</br>
 <h3>プログラムの構造</h3>
 <!--  どのような設計をしたか．-->
-なし。
+
+<p>
+配布されたPlannerプログラムからinitInitialState,initGoalList,initOperatorsを変更した。</br>
+変更内容は上で述べたので割愛する。</br>
+</p>
+
+
 <h3>実装の説明</h3>
 <!--
  どう実装したか，ソースコードを詳細に説明する．
  特に重要な箇所はレポートにペーストして説明する．
 -->
-なし。
+<p>
+同様に割愛する。</br>
+</p>
+
+<!--
+  ソースコードをはりつける時は <pre> タグを使う
+  class="brush: java" でシンタックスハイライトする
+  重要な部分のみを貼り付ければ良い
+-->
+
+
 <h3>実行例</h3>
-なし。
+<p>
+<!-- 実行例を示す．PNGやGIF等の絵を張っても良い．-->
+初期状態を、哲学者Bがフォーク1とフォーク2を持っている状態</br>
+philosopher A has nothing on the left hand</br>
+philosopher A has nothing on the right hand</br>
+philosopher B has fork 2 on the left hand</br>
+philosopher B has fork 1 on the right hand</br>
+philosopher C has nothing on the left hand</br>
+philosopher C has nothing on the right hand</br>
+philosopher D has nothing on the left hand</br>
+philosopher D has nothing on the right hand</br>
+philosopher E has nothing on the left hand</br>
+philosopher E has nothing on the right hand</br>
+ontable fork 3</br>
+ontable fork 4</br>
+ontable fork 5</br>
+</p>
+とし、</br>
+目標状態を、AとCが食事をしている状態</br>
+philosopher A is eating</br>
+philosopher C is eating</br>
+としたときのplan(解)を以下に示す。</br></br>
+<!-- 画像ファイルを貼る場合は <img> タグを使う -->
+<img src="./7-7.png"/>
+</br>
+<p>
+解は、Bがフォーク1をテーブルに置き(2文目)、</br>
+Aが置いたフォーク1とフォーク5を手に取りAを食事状態とする(3,4文目)。</br>
+その後、Cがフォーク3を拾った後(6文目)、Bがフォーク2をテーブルに置き(7文目)、Cがフォーク2を取り上げている(8文目)。</br>
+</p>
+
+
 <h2>考察</h2>
 <!--
  考察を書く．PNGやGIF等の絵を張っても良い．
  例: 自分で工夫して解決した点，その解決手法，なぜそうしたのか，その手法の素晴らしさ，上手くいかなかった点，なぜ上手くいかなかったのか，など．
  例: 今回はできなかったが，更に〜の機能を追加すべきである．なぜなら，...
 -->
-<b>課題6-1</b></br>
-<h4>・前向き推論とは</h4>
+<b>課題7-1</b></br>
+<b>解決した問題点1</b></br>
+配布されたプログラムをそのまま実行すると、"Place A on A"など、Aの上にAを置く動作が確認できる。</br>
+この動作は、Aという物体が2つ以上存在しない限りあり得ない動作なのでこのエラーを修正する。</br>
+<b>原因</b></br>
 <p>
-前向き推論とは使用可能なデータ(ワーキングメモリ)から、与えられたルールを用いてデータを増やし、最終解を得るまで推論を行う推論方法である。</br>
-主にルールともとあるデータから新たな事実を増やしていくことで推論を進める。</br>
-この推論方法は使用可能なデータからスタートし、推論規則を使って最適解に達するまでさらにデータを引き出していく。前向き推論を使う推論方法は、推論規則の前件を検索し、前件部（IF節）が真であることが分かっている規則を探し出す。見つけた規則の後件部（THEN節）は、データセットへの新たな情報として追加される。
+目標を副目標に分解している際、目標状態リスト内に"holding A"という状態が存在することがある。</br>
+現在状態(CurrentState)内に"holding A"という状態が存在しない限り、目標"holding A"はさらに副目標に分解されることになる。</br>
+"holding ?x"がADD-Listに存在するルールはオペレーター2（テーブルの上から手への移動）とオペレーター3(ブロックの上から手への移動)である。
+本来オペレーター3を選択するべき場面でオペレーター2が選択されてしまった場合、次の副目標へ分解の際にプログラムはオペレーター1を選択することになる。そのときにブロックAはあるブロックの上から動かしたわけではないことから、?yに適切な値を入力することができなくなり、このエラーが生じる。</br>
+現実世界で実際にブロックを操作する際にブロックを手に取る("holding ?x")ことになるのは、あるブロックの上に存在するブロックを手に取るときと、テーブルの上にあるブロックを持ち上げるときである。例えば現実世界でブロックAがテーブルの上にあり、ブロックAを動かすべき状態になったとき、オペレーター2を選択するのが正しい選択となる。しかし、プランニングのプログラムでは、後ろ向きに推論しているためADDリストに"holding ?x"があるだけでそのオペレーターを選択してしまう。</br>
+</p>
+
+<b>解決策</b></br>
+<p>
+この問題を解決するには、状態を"holding A"ではなく"holding A from table"等、状態"holding"を細分化し、ルールで競合が起こらないようにするなどが考えられるが、ここではもっと簡潔にこの問題を解決する。</br>
+今回の課題7-1では、初期状態として全てのブロックはテーブルと接している形が与えられている。</br>
+ここで、この初期状態からブロックを最適な方法で操作することができるならば、あるブロックの上に存在するブロックを操作するオペレーター3は最適解に含まれることはないという事実を利用する。</br>
+よって、オペレーター3の優先度を最小にする。</br>
+またこれにより最適解を得られなくなる要因の競合は発生しなくなるので、最適解を得ることができる。</br>
+</p>
+
+<b>問題点</b></br>
+<p>
+今回の課題7-1では対象外であるが、初期状態も変更の対象となる場合この解決策では破綻する。</br>
+理由は解決策の欄でも述べたが、ブロックの上に存在するブロックを動かさないといけない初期状態が与えられたときにオペレーター3が選択されることがなくなり、無限ループに陥ってしまうからである。</br>
+</p></br>
 </br>
 
-</p>
-</br>
-<h4>・後ろ向き推論とは</h4>
+<b>解決した問題点2</b></br>
+目標状態を"B on C"、"A on B"ではなく"A on B"、"B on C"のように物体の位置が上のものから入力してしまうと正しく解を得ることができない。</br>
+
+<b>原因</b></br>
+このプログラムは、目標を副目標に分解し、全ての副目標がCurrentListに存在する場合、目標の分解をやめ、動作を確定させている。</br>
+ゴールリストから分解対象を取り出すのは上から順番であるため、"A on B"を取り出し、AをBの上にのせる手順を確定させてしまうためにこのエラーが起こる。</br>
+<b>解決策</b></br>
+目標状態を格納するときに位置が下からとなるようにソートし、GoalListに格納する。</br></br></br>
+<b>課題7-7</b></br>
 <p>
-後ろ向き推論とは仮説の真偽を、与えられたルールを用いて導く推論方法である。</br>
-仮説を与えられたルールを用いて解釈を行うことで推論を進める。</br>
-推論方法は推論規則を検索し、ルールの後件（THEN節）がゴールにマッチする規則を探す。その規則の前件部（IF節）が真かどうか不明な場合、それもゴールのリストに追加され（つまり、仮説の一部とされ）、それを立証するデータをさらに導き出さなければならない。
-</p>
-</br>
-<h4>・前向き推論と後ろ向き推論の違い</h4>
-<p>
-1.使用可能データ(事実)とゴール(仮説)</br>
-前向き推論では徐々に使用可能データは増えることになるが、後ろ向き推論では始めに与えられたデータから増えることはなく一定を保つ。これは前向き推論では導き出されるものは事実であり、最適解を得る過程でその事実を再度用いることができるからである。</br>
-一方後ろ向き推論ではワーキングメモリ(使用可能データ)が増えることはない。理由は後ろ向き推論で得る情報は事実ではなく、その段階では仮説であるからである。</br>
-しかし、後ろ向き推論ではゴール(仮説)が増えていくことになる。これはゴールが後件部とマッチングした場合、ルールの規則の前件部が全て使用可能データとマッチングするか確かめる必要があるからである。IF節が2つ以上存在する際に一度保存しておく必要がでてくるため、リストで保管する。</br>
-よって、推論によって事実が増えるのが前向き推論であり、仮説が増えるのが後ろ向き推論である。</br></p>
-</br>
-<p>
-2.ルールの扱い</br>
-前向き推論ではルールの前件部とデータのマッチングを行い、trueならば後件部をワーキングリストに代入する。</br>
-しかし後ろ向き推論でははじめにマッチングさせるのは後件部であり、前件部を得ることになる。</br>
-前向き推論では事実を増やし推論を進めるので後件部を多く得ることになるが、後ろ向き推論は仮説の解釈を進めるのが目的であるので前件部を得ることになる。</br>
+本プログラムでは、登場する哲学者それぞれの食事条件を与えているが、これはあまりスマートなやり方といえない。</br>初めはフォークに名前をつけることは考えていなかったが、フォークに名前をつけないと哲学者が1つ隣のフォークも手を伸ばして取ってしまい食事状態になることが考えられたので、フォークに名前をつけ、ゴール条件を哲学者それぞれ与えることによって、制御に成功した。</br>
+しかしルールの数が増えてしまうことや、哲学者の人数を増やすことはできないので、この制御方式は改善の余地が残されている。</br>
 
 </p>
-</br>
-</br>
-</br>
-<b>課題6-4</b></br>
-<p>グループ3では、進捗管理等をLINEを使って管理し、データ、プログラム等の共有をGitHubを用いて管理することにした。</br></p><p>
-LINEを用いる理由は、
-<li>文章で共有する情報は使い慣れているLINEで十分</li>
-<li>スケジュール調整等のツールが豊富</li>
-等が挙げられる。</br></br></p>
-<p>またGitHubを選んだ理由は、
-<li>候補(GitHub,Slack,Trello,Redmine)の中でも聞き覚えがある。</li>
-<li>このツールを使っている先輩を知っている。</li>
-等が挙げられる。</br>
+<p>
+また"ontable fork ○"という状態は"philosopher ○ has nothing on the △ hand"と持つ情報がかなり被っており、この状態を作成するか考えたが、</br>
+"ontable fork ○"という状態を追加することで、後ろ向き推論のルールを作成する際に方針がたてやすくなったり、また実行するユーザー側も"テーブルの上にfork○がある"と端末上に表示することで、実行過程が鮮明になると思いこの状態を追加した。</br>
+事実、例えば、"philosopher A has nothing on the left hand"（Aは左手に何も持っていない）,"philosopher B has nothing on the right hand"(Bは右手に何も持っていない)の2文を検査することででAとBの間に存在するフォーク1の行方はわかる(この例の場合は机に存在する)。これは全ての哲学者の右手、左手の情報(計10つ)が常にCurrentListに格納されているからである。</br>
+
 </p>
-</br>
-Githubでは、グループを作成しグループ内にリポジトリを作成、その中のファイルを自由に変更できるようにした。</br>
-Githubは、グループを作成しそのなかでファイルを管理するため、グループで認められたメンバーのみが共有ファイルにアクセスできる。</br>
 <hr>
 
 
@@ -294,7 +443,8 @@ Githubは、グループを作成しそのなかでファイルを管理する�
 <!-- 感想を書く．-->
 <!-- 例: 〜が面白かった，〜がわからなかった，〜を作ってみたい，講義・演習に関する要望，など．-->
 <p>
-今までの個人課題と比べて躓いたときに相談、協力しあえた分精神的にも良い環境で課題を進めることができた。またクオリティも個人課題と比べて高いものができたと思う。
+  フィボナッチ数の一般項をもとめるのに夢中であやうく実装が間に合わなくなるところだった．
+  実装に関しては……
 </p>
 
 
@@ -303,7 +453,7 @@ Githubは、グループを作成しそのなかでファイルを管理する�
 
 <ul>
   <li>グループ3のメンバー</li>
-  <li>新谷虎松 著（19XX）『知能プログラミング入門』コロナ社</li>
+ <li>新谷虎松 著（19XX）『知能プログラミング入門』コロナ社</li>
 </ul>
 
 </body>
